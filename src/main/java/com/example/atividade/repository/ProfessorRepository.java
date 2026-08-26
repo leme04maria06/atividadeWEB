@@ -1,24 +1,26 @@
 package com.example.atividade.repository;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
-import com.example.atividade.model.Aluno;
 import com.example.atividade.model.Pessoa;
+import com.example.atividade.model.Professor;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 @Repository
-public class AlunoRepository {
-    @PersistenceContext
+public class ProfessorRepository {
+ @PersistenceContext
     private EntityManager em;
 
     @Transactional
-    public boolean insert (Aluno aluno, Pessoa pessoa) {
+    public boolean insert (Professor professor, Pessoa pessoa) {
         try {
-             String comando;
+            String comando;
             Query query;
             comando = "insert into pessoas (nome, cpf, cidade, idade, email, email, telefone, cep) values";
             comando += "(:nome, :cpf, :vcidade, :cidade, :idade, :email, :telefone, :cep)";
@@ -35,15 +37,14 @@ public class AlunoRepository {
             Number idGerado = (Number) em
                     .createNativeQuery("SELECT LAST_INSERT_ID()")
                     .getSingleResult();
-            
-            comando = "INSERT INTO aluno (";
-            comando +=  "prontuario, nomeResponsavel, telefoneResponsavel, curso VALUES (";
-            comando += ":prontuario, :nomeResponsavel, :telefoneResponsavel, :curso)";
-            
-            query.setParameter("prontuario", aluno.getProntuario());
-            query.setParameter("nomeResponsavel", aluno.getNomeResponsavel());
-            query.setParameter("telefoneResponsavel", aluno.getTelefoneResponsavel());
-            query.setParameter("curso", aluno.getIdCurso());
+
+            comando = "INSERT INTO professores (";
+            comando +=  "id_pessoa, , prontuario, formacao) VALUES (";
+            comando += ":id, :prontuario, :vformacao)";
+            query = em.createNativeQuery(comando);
+            query.setParameter("id", idGerado.intValue());
+            query.setParameter("prontuario", professor.getProntuario());
+            query.setParameter("vformacao", professor.getFormacao());
             query.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -51,6 +52,10 @@ public class AlunoRepository {
             return false;
         }
     }
-    
-}
 
+    public List<Professor> findAll() {
+        String comando = "SELECT * FROM Professor ORDER BY nome";
+        Query query = em.createNativeQuery(comando, Professor.class);
+        return query.getResultList();
+    }
+}

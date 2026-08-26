@@ -30,7 +30,7 @@ public class Professor extends Pessoa {
     @Column(name = "idProfessor")
     private int idProfessor;
 
-    public int getId() {
+    public int getIdProfessor() {
         return idProfessor;
     }
 

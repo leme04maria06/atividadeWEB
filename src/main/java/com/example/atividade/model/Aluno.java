@@ -17,9 +17,12 @@ public class Aluno extends Pessoa{
 
     }
 
-    public Aluno(int idAluno, String prontuario){
+    public Aluno(int idAluno, String prontuario, String nomeResponsavel, String telefoneResponsavel, Curso curso){
         this.idAluno = idAluno;
         this.prontuario = prontuario;
+        this.nomeResponsavel = nomeResponsavel;
+        this.telefoneResponsavel = telefoneResponsavel;
+        this.curso = curso;
     }
 
     @Id
